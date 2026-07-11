@@ -7,7 +7,7 @@ const CATS = ['Tất cả', 'Di chuyển', 'Bảo hiểm', 'An toàn', 'Chăm s�
 
 export function Services() {
   const [cat, setCat] = useState('Tất cả');
-  const { selectedVehicle, showToast } = useApp();
+  const { selectedVehicle, activateService } = useApp();
 
   const list = useMemo(() => (cat === 'Tất cả' ? SERVICES : SERVICES.filter((s) => s.category === cat)), [cat]);
 
@@ -29,7 +29,7 @@ export function Services() {
       </div>
 
       {list.map((s) => (
-        <button key={s.id} className="service-card" style={{ width: 'calc(100% - 32px)', textAlign: 'left' }} onClick={() => showToast(`Mở dịch vụ: ${s.name}`)}>
+        <button key={s.id} className="service-card" style={{ width: 'calc(100% - 32px)', textAlign: 'left' }} onClick={() => activateService(s.id, s.name)}>
           <div className="service-visual">
             <Visual kind={s.image} />
           </div>

@@ -3,8 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '../components/Icon';
 import { DetailHeader, Sheet, Visual } from '../components/Shared';
 import { TIERS, USER } from '../data/mock';
+import type { Redemption } from '../data/mock';
 import { rewardById, useApp } from '../state/AppState';
-import type { Redemption } from '../state/AppState';
 import { fmtDate, fmtNum, fmtVND } from '../utils/format';
 
 const tierRank: Record<string, number> = { silver: 0, gold: 1, platinum: 2, diamond: 3 };
@@ -13,7 +13,7 @@ export function RewardDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const reward = rewardById(id);
-  const { pointsBalance, selectedVehicle, redeem } = useApp();
+  const { pointsBalance, selectedVehicle, redeem, showToast } = useApp();
 
   const [confirming, setConfirming] = useState(false);
   const [agreed, setAgreed] = useState(false);
@@ -45,12 +45,17 @@ export function RewardDetail() {
 
   async function confirmRedeem() {
     setProcessing(true);
-    // Simulated biometric/OTP confirmation step before deducting points
-    await new Promise((r) => setTimeout(r, 900));
-    const redemption = redeem(reward!);
-    setProcessing(false);
-    setConfirming(false);
-    setDone(redemption);
+    try {
+      // Simulated biometric/OTP confirmation step before backend redemption.
+      await new Promise((r) => setTimeout(r, 700));
+      const redemption = await redeem(reward!);
+      setConfirming(false);
+      setDone(redemption);
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Không đổi được ưu đãi');
+    } finally {
+      setProcessing(false);
+    }
   }
 
   /* ===== Success screen ===== */

@@ -188,6 +188,18 @@ export interface Reward {
   addedAt: string;
 }
 
+export interface Redemption {
+  id: string;
+  rewardId: string;
+  title: string;
+  code: string;
+  redeemedAt: string;
+  expiry: string;
+  fulfillment: 'voucher' | 'service';
+  vehicleId?: string | null;
+  status?: 'active' | 'used' | 'expired';
+}
+
 export const REWARDS: Reward[] = [
   {
     id: 'R-TOLL-50',
