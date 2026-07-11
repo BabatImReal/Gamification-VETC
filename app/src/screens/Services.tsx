@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
 import { Visual } from '../components/Shared';
-import { SERVICES } from '../data/mock';
 import { useApp } from '../state/AppState';
 
 const CATS = ['Tất cả', 'Di chuyển', 'Bảo hiểm', 'An toàn', 'Chăm sóc xe', 'Xe điện', 'Tasco'];
 
 export function Services() {
   const [cat, setCat] = useState('Tất cả');
-  const { selectedVehicle, activateService } = useApp();
+  const { selectedVehicle, services, activateService } = useApp();
 
-  const list = useMemo(() => (cat === 'Tất cả' ? SERVICES : SERVICES.filter((s) => s.category === cat)), [cat]);
+  const list = useMemo(() => (cat === 'Tất cả' ? services : services.filter((s) => s.category === cat)), [cat, services]);
 
   return (
     <div className="page">

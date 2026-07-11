@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Icon } from '../components/Icon';
 import { DetailHeader, EmptyState, Visual } from '../components/Shared';
-import { useApp, rewardById } from '../state/AppState';
+import { useApp } from '../state/AppState';
 import { fmtDate } from '../utils/format';
 
 export function MyRewards() {
-  const { redemptions } = useApp();
+  const { rewards, redemptions } = useApp();
 
   return (
     <div className="page">
@@ -25,7 +25,7 @@ export function MyRewards() {
       ) : (
         <div className="section" style={{ marginTop: 6 }}>
           {redemptions.map((rd) => {
-            const reward = rewardById(rd.rewardId);
+            const reward = rewards.find((item) => item.id === rd.rewardId);
             return (
               <div key={rd.id} className="card" style={{ padding: 15, marginBottom: 12, display: 'flex', gap: 13 }}>
                 <div className="service-visual">

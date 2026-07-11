@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Icon } from '../components/Icon';
 import { Sheet, Visual } from '../components/Shared';
-import { REWARDS, TIERS, USER } from '../data/mock';
+import { TIERS } from '../data/mock';
 import type { Reward } from '../data/mock';
 import { useApp } from '../state/AppState';
 import { fmtDate, fmtNum } from '../utils/format';
@@ -32,12 +32,12 @@ const SORTS: { id: SortId; label: string }[] = [
 const tierRank: Record<string, number> = { silver: 0, gold: 1, platinum: 2, diamond: 3 };
 const EXPIRING_SOON_MS = 21 * 24 * 3600 * 1000;
 
-function matchesFilter(r: Reward, f: FilterId, points: number): boolean {
+function matchesFilter(r: Reward, f: FilterId, points: number, tier: string): boolean {
   switch (f) {
     case 'all':
       return true;
     case 'available':
-      return r.points <= points && tierRank[r.minTier] <= tierRank[USER.tier];
+      return r.points <= points && tierRank[r.minTier] <= tierRank[tier];
     case 'toll':
       return r.category === 'toll' || r.category === 'ev';
     case 'carcare':
@@ -54,14 +54,14 @@ function matchesFilter(r: Reward, f: FilterId, points: number): boolean {
 }
 
 export function Rewards() {
-  const { pointsBalance } = useApp();
+  const { user, rewards, pointsBalance } = useApp();
   const [params, setParams] = useSearchParams();
   const filter = (params.get('filter') as FilterId) ?? (params.get('cat') === 'toll' ? 'toll' : 'all');
   const [sort, setSort] = useState<SortId>('recommended');
   const [sortSheet, setSortSheet] = useState(false);
 
   const list = useMemo(() => {
-    const filtered = REWARDS.filter((r) => matchesFilter(r, filter, pointsBalance));
+    const filtered = rewards.filter((r) => matchesFilter(r, filter, pointsBalance, user.tier));
     const sorted = [...filtered];
     switch (sort) {
       case 'low':
@@ -85,7 +85,7 @@ export function Rewards() {
         });
     }
     return sorted;
-  }, [filter, sort, pointsBalance]);
+  }, [filter, sort, pointsBalance, rewards, user.tier]);
 
   return (
     <div className="page">
@@ -120,7 +120,7 @@ export function Rewards() {
       <div className="reward-grid">
         {list.map((r) => {
           const enough = r.points <= pointsBalance;
-          const tierOk = tierRank[r.minTier] <= tierRank[USER.tier];
+          const tierOk = tierRank[r.minTier] <= tierRank[user.tier];
           return (
             <Link key={r.id} to={`/rewards/${r.id}`} className="reward-card">
               <div className="reward-visual">

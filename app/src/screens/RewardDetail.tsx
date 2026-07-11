@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '../components/Icon';
 import { DetailHeader, Sheet, Visual } from '../components/Shared';
-import { TIERS, USER } from '../data/mock';
+import { TIERS } from '../data/mock';
 import type { Redemption } from '../data/mock';
-import { rewardById, useApp } from '../state/AppState';
+import { useApp } from '../state/AppState';
 import { fmtDate, fmtNum, fmtVND } from '../utils/format';
 
 const tierRank: Record<string, number> = { silver: 0, gold: 1, platinum: 2, diamond: 3 };
@@ -12,8 +12,8 @@ const tierRank: Record<string, number> = { silver: 0, gold: 1, platinum: 2, diam
 export function RewardDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const reward = rewardById(id);
-  const { pointsBalance, selectedVehicle, redeem, showToast } = useApp();
+  const { user, rewards, pointsBalance, selectedVehicle, redeem, showToast } = useApp();
+  const reward = rewards.find((item) => item.id === id);
 
   const [confirming, setConfirming] = useState(false);
   const [agreed, setAgreed] = useState(false);
@@ -39,7 +39,7 @@ export function RewardDetail() {
   }
 
   const enough = reward.points <= pointsBalance;
-  const tierOk = tierRank[reward.minTier] <= tierRank[USER.tier];
+  const tierOk = tierRank[reward.minTier] <= tierRank[user.tier];
   const after = pointsBalance - reward.points;
   const minTierName = TIERS.find((t) => t.id === reward.minTier)!.name;
 

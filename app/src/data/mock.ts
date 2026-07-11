@@ -595,6 +595,18 @@ export interface Mission {
   deadline: string;
   vehicle: string | null;
   aiReason: string;
+  aiSignals?: string[];
+  aiScore?: number;
+  scoreBreakdown?: {
+    segmentFit: number;
+    activityFit: number;
+    serviceGapFit: number;
+    campaignFit: number;
+    urgencyFit: number;
+    rewardAffinityFit: number;
+    frictionPenalty: number;
+  };
+  scoringFormula?: string;
   nextAction: string;
   status: 'active' | 'completed' | 'locked';
   image: string;

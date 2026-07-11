@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Icon } from '../components/Icon';
 import { Sheet, Visual } from '../components/Shared';
-import { OFFERS, USER, VEHICLES, nextTier, tierById } from '../data/mock';
+import { OFFERS, nextTier, tierById } from '../data/mock';
 import { useApp } from '../state/AppState';
 import { fmtDate, fmtNum, fmtVND } from '../utils/format';
 
@@ -16,14 +16,14 @@ const QUICK_ACTIONS = [
 ];
 
 export function Home() {
-  const { pointsBalance, cashBalance, selectedVehicle, setSelectedVehicleId, showToast } = useApp();
+  const { user, pointsBalance, cashBalance, vehicles, selectedVehicle, setSelectedVehicleId, showToast } = useApp();
   const [vehicleSheet, setVehicleSheet] = useState(false);
   const navigate = useNavigate();
 
-  const tier = tierById(USER.tier);
-  const next = nextTier(USER.tier);
-  const remaining = next ? next.threshold - USER.eligibleSpending : 0;
-  const pct = next ? Math.min(100, Math.round((USER.eligibleSpending / next.threshold) * 100)) : 100;
+  const tier = tierById(user.tier);
+  const next = nextTier(user.tier);
+  const remaining = next ? next.threshold - user.eligibleSpending : 0;
+  const pct = next ? Math.min(100, Math.round((user.eligibleSpending / next.threshold) * 100)) : 100;
 
   const hour = new Date().getHours();
   const greet = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối';
@@ -35,7 +35,7 @@ export function Home() {
         <div className="hero-top">
           <div>
             <div className="hero-greet">{greet} 👋</div>
-            <div className="hero-name">{USER.name}</div>
+            <div className="hero-name">{user.name}</div>
           </div>
           <button className="iconbtn" aria-label="Thông báo" onClick={() => showToast('Bạn có 3 thông báo mới')}>
             <Icon name="bell" />
@@ -60,8 +60,8 @@ export function Home() {
             Hạng {tier.name}
           </div>
         </div>
-        <div className="mc-name">{USER.name.toUpperCase()}</div>
-        <div className="mc-no">{USER.memberNo}</div>
+        <div className="mc-name">{user.name.toUpperCase()}</div>
+        <div className="mc-no">{user.memberNo}</div>
         <div className="mc-bottom">
           <div>
             <div className="mc-points-label">Điểm VETC của bạn</div>
@@ -73,7 +73,7 @@ export function Home() {
           <div className="mc-valid">
             Kỳ xét hạng đến
             <br />
-            <strong>{fmtDate(USER.tierReviewDate)}</strong>
+            <strong>{fmtDate(user.tierReviewDate)}</strong>
           </div>
         </div>
       </Link>
@@ -107,7 +107,7 @@ export function Home() {
               </Link>
             </div>
             <div className="small muted" style={{ marginTop: 6 }}>
-              Chi tiêu xét hạng: <strong style={{ color: 'var(--text)' }}>{fmtVND(USER.eligibleSpending)}</strong> /{' '}
+              Chi tiêu xét hạng: <strong style={{ color: 'var(--text)' }}>{fmtVND(user.eligibleSpending)}</strong> /{' '}
               {fmtVND(next.threshold)}
             </div>
             <div className="progress-track" style={{ marginTop: 12 }}>
@@ -139,13 +139,13 @@ export function Home() {
       )}
 
       {/* ===== Expiring points ===== */}
-      {USER.expiringPoints && (
+      {user.expiringPoints && (
         <div className="section">
           <div className="alert">
             <Icon name="hourglass" />
             <div style={{ flex: 1 }}>
               <div className="a-title">
-                {fmtNum(USER.expiringPoints.amount)} điểm sắp hết hạn ngày {fmtDate(USER.expiringPoints.date)}
+                {fmtNum(user.expiringPoints.amount)} điểm sắp hết hạn ngày {fmtDate(user.expiringPoints.date)}
               </div>
               <div className="a-sub">Dùng điểm cho phí đường bộ hoặc đổi ưu đãi để không bỏ lỡ quyền lợi.</div>
               <button className="a-cta" onClick={() => navigate('/rewards?filter=expiring')}>
@@ -211,7 +211,7 @@ export function Home() {
             Chọn phương tiện
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {VEHICLES.map((v) => {
+            {vehicles.map((v) => {
               const active = v.id === selectedVehicle.id;
               return (
                 <button

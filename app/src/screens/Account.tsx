@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Icon } from '../components/Icon';
-import { USER, VEHICLES } from '../data/mock';
 import { useApp } from '../state/AppState';
 import { fmtDate, fmtNum, fmtVND } from '../utils/format';
 
@@ -15,7 +14,7 @@ const SETTINGS: { icon: string; label: string; sub?: string; to?: string }[] = [
 ];
 
 export function Account() {
-  const { pointsBalance, cashBalance, showToast } = useApp();
+  const { user, vehicles, pointsBalance, cashBalance, showToast } = useApp();
 
   return (
     <div className="page">
@@ -33,14 +32,14 @@ export function Account() {
             fontWeight: 800,
           }}
         >
-          MA
+          {user.name.split(' ').slice(-1)[0]?.slice(0, 2).toUpperCase() ?? 'VT'}
         </div>
         <div style={{ flex: 1 }}>
           <div className="h1" style={{ fontSize: 19 }}>
-            {USER.name}
+            {user.name}
           </div>
           <div className="small muted" style={{ marginTop: 3 }}>
-            {USER.phone} • Hội viên từ {fmtDate(USER.memberSince)}
+            {user.phone} • Hội viên từ {fmtDate(user.memberSince)}
           </div>
         </div>
       </header>
@@ -51,7 +50,7 @@ export function Account() {
           <div className="kv">
             <span className="k">Định danh eKYC</span>
             <span className="v">
-              {USER.ekycVerified ? (
+              {user.ekycVerified ? (
                 <span className="badge badge--green">
                   <Icon name="check" />
                   Đã xác thực
@@ -63,7 +62,7 @@ export function Account() {
           </div>
           <div className="kv">
             <span className="k">Ngân hàng liên kết</span>
-            <span className="v">{USER.linkedBank}</span>
+            <span className="v">{user.linkedBank}</span>
           </div>
           <div className="kv">
             <span className="k">Tài khoản giao thông</span>
@@ -86,7 +85,7 @@ export function Account() {
             + Thêm xe
           </button>
         </div>
-        {VEHICLES.map((v) => (
+        {vehicles.map((v) => (
           <div key={v.id} className="card" style={{ padding: 16, marginBottom: 12 }}>
             <div style={{ display: 'flex', gap: 13, alignItems: 'center' }}>
               <span className="row-ic" style={{ background: 'var(--brand-soft)', color: 'var(--brand)', width: 46, height: 46 }}>

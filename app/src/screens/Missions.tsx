@@ -5,12 +5,24 @@ import { Sheet, Visual } from '../components/Shared';
 import { ACHIEVEMENTS, GAME_PROFILE } from '../data/mock';
 import type { Mission } from '../data/mock';
 import { useApp } from '../state/AppState';
-import { fmtDate, fmtNum } from '../utils/format';
+import { fmtDate, fmtDateTime, fmtNum } from '../utils/format';
 
 const FILTERS = ['Tất cả', 'Chiến dịch', 'Dịch vụ', 'An toàn', 'EV', 'Hằng ngày'] as const;
 
+function modeLabel(mode: string | undefined) {
+  if (mode === 'openai') return 'AI mode: OpenAI';
+  if (mode === 'rules-fallback') return 'AI mode: Rules fallback';
+  return 'AI mode: Rules';
+}
+
+function modeClass(mode: string | undefined) {
+  if (mode === 'openai') return 'badge badge--green';
+  if (mode === 'rules-fallback') return 'badge badge--amber';
+  return 'badge badge--gray';
+}
+
 export function Missions() {
-  const { missions, completeMission } = useApp();
+  const { missions, recommendation, recommendationHistory, completeMission } = useApp();
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>('Tất cả');
   const [detail, setDetail] = useState<Mission | null>(null);
 
@@ -62,6 +74,95 @@ export function Missions() {
         </div>
       </div>
 
+      {recommendation && (
+        <div className="section">
+          <div className="scenario-panel">
+            <div className="scenario-head">
+              <span className="scenario-label">AI cá nhân hóa theo người dùng hiện tại</span>
+              <span className={modeClass(recommendation.personalizationMeta?.mode)}>
+                {modeLabel(recommendation.personalizationMeta?.mode)}
+              </span>
+            </div>
+            <div className="scenario-select" aria-label="Người dùng hiện tại">
+              {recommendation.profile.label}
+            </div>
+            <div className="small muted" style={{ marginTop: 10, lineHeight: 1.55 }}>
+              {recommendation.recommendationSummary}
+            </div>
+            <div className="kv" style={{ marginTop: 10 }}>
+              <span className="k">Next best action</span>
+              <span className="v">{recommendation.nextBestAction}</span>
+            </div>
+            <div className="scenario-signals">
+              <span>{recommendation.profile.segment}</span>
+              <span>{recommendation.profile.city}</span>
+              <span>Engagement {recommendation.profile.engagementScore}</span>
+              <span>Vắng {recommendation.profile.lastActiveDays} ngày</span>
+              <span>{recommendation.profile.vehicleType}</span>
+            </div>
+            {recommendation.personalizationMeta && (
+              <div className="explain-panel">
+                <div className="small" style={{ fontWeight: 700 }}>Logic AI đang dùng</div>
+                <div className="small muted" style={{ marginTop: 4, lineHeight: 1.55 }}>
+                  {recommendation.personalizationMeta.scoringFormula}
+                </div>
+                <div className="small muted" style={{ marginTop: 10 }}>
+                  Activity rules khớp với hồ sơ hiện tại
+                </div>
+                <div className="ai-signal-list">
+                  {recommendation.personalizationMeta.matchedActivityRules.length ? (
+                    recommendation.personalizationMeta.matchedActivityRules.map((rule) => (
+                      <span key={rule}>{rule}</span>
+                    ))
+                  ) : (
+                    <span>Không có activity rule nổi bật, AI ưu tiên theo profile và service gap.</span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {recommendationHistory.length > 0 && (
+        <div className="section">
+          <div className="section-head">
+            <div className="h2">Lịch sử gợi ý AI</div>
+            <span className="small muted">{recommendationHistory.length} lần gần nhất</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {recommendationHistory.map((snapshot, index) => (
+              <div
+                key={snapshot.id}
+                className="card"
+                style={{ padding: '14px 16px', border: index === 0 ? '1px solid rgba(10,61,145,0.18)' : undefined }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div className="small muted">{fmtDateTime(snapshot.createdAt)}</div>
+                    <div className="mission-title" style={{ marginTop: 6, fontSize: 15 }}>
+                      {snapshot.recommendations[0]?.title ?? 'Chưa có gợi ý'}
+                    </div>
+                    <div className="small muted" style={{ marginTop: 4, lineHeight: 1.55 }}>
+                      {snapshot.nextBestAction}
+                    </div>
+                  </div>
+                  <span className={modeClass(snapshot.mode)}>{modeLabel(snapshot.mode)}</span>
+                </div>
+                <div className="ai-signal-list" style={{ marginTop: 10 }}>
+                  {snapshot.recommendations.slice(0, 3).map((item) => (
+                    <span key={`${snapshot.id}-${item.id}`}>
+                      {item.title}
+                      {typeof item.aiScore === 'number' ? ` • ${item.aiScore}` : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="filter-row" style={{ marginTop: 14 }}>
         {FILTERS.map((f) => (
           <button key={f} className={`chip ${filter === f ? 'chip--on' : ''}`} onClick={() => setFilter(f)}>
@@ -87,10 +188,20 @@ export function Missions() {
                 <div className="mission-main">
                   <div className="mission-head">
                     <span className="badge badge--blue">{m.category}</span>
-                    <span className="small muted">Hạn {fmtDate(m.deadline)}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      {typeof m.aiScore === 'number' && <span className="mission-score">Fit {m.aiScore}</span>}
+                      <span className="small muted">Hạn {fmtDate(m.deadline)}</span>
+                    </div>
                   </div>
                   <div className="mission-title">{m.title}</div>
                   <div className="mission-desc">{m.description}</div>
+                  {m.aiSignals?.length ? (
+                    <div className="ai-signal-list">
+                      {m.aiSignals.map((signal) => (
+                        <span key={signal}>{signal}</span>
+                      ))}
+                    </div>
+                  ) : null}
                   <div className="progress-track" style={{ marginTop: 10 }}>
                     <div className="progress-fill" style={{ width: `${pct}%` }} />
                   </div>
@@ -142,10 +253,61 @@ export function Missions() {
           <div className="card" style={{ marginTop: 14, padding: '15px 17px', border: '1px solid var(--line)', boxShadow: 'none' }}>
             <div className="mission-title">{detail.title}</div>
             <p className="small muted" style={{ marginTop: 8, lineHeight: 1.6 }}>{detail.aiReason}</p>
+            {detail.aiSignals?.length ? (
+              <div className="ai-signal-list">
+                {detail.aiSignals.map((signal) => (
+                  <span key={signal}>{signal}</span>
+                ))}
+              </div>
+            ) : null}
             <div className="kv" style={{ marginTop: 8 }}>
               <span className="k">Hành động tốt nhất</span>
               <span className="v">{detail.nextAction}</span>
             </div>
+            {typeof detail.aiScore === 'number' && (
+              <div className="kv">
+                <span className="k">Điểm phù hợp</span>
+                <span className="v">{detail.aiScore}/99</span>
+              </div>
+            )}
+            {detail.scoringFormula && (
+              <div className="kv">
+                <span className="k">Công thức</span>
+                <span className="v mission-formula">{detail.scoringFormula}</span>
+              </div>
+            )}
+            {detail.scoreBreakdown && (
+              <div className="score-grid">
+                <div className="score-item">
+                  <span>Segment fit</span>
+                  <strong>{detail.scoreBreakdown.segmentFit}</strong>
+                </div>
+                <div className="score-item">
+                  <span>Activity fit</span>
+                  <strong>{detail.scoreBreakdown.activityFit}</strong>
+                </div>
+                <div className="score-item">
+                  <span>Service gap</span>
+                  <strong>{detail.scoreBreakdown.serviceGapFit}</strong>
+                </div>
+                <div className="score-item">
+                  <span>Campaign fit</span>
+                  <strong>{detail.scoreBreakdown.campaignFit}</strong>
+                </div>
+                <div className="score-item">
+                  <span>Urgency fit</span>
+                  <strong>{detail.scoreBreakdown.urgencyFit}</strong>
+                </div>
+                <div className="score-item">
+                  <span>Reward affinity</span>
+                  <strong>{detail.scoreBreakdown.rewardAffinityFit}</strong>
+                </div>
+                <div className="score-item score-item--penalty">
+                  <span>Friction penalty</span>
+                  <strong>-{detail.scoreBreakdown.frictionPenalty}</strong>
+                </div>
+              </div>
+            )}
             {detail.vehicle && (
               <div className="kv">
                 <span className="k">Xe liên quan</span>

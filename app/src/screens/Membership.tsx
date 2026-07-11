@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Icon } from '../components/Icon';
 import { DetailHeader } from '../components/Shared';
-import { ELIGIBLE_EXAMPLES, MEMBERSHIP_FAQ, TIERS, USER, nextTier, tierById } from '../data/mock';
+import { ELIGIBLE_EXAMPLES, MEMBERSHIP_FAQ, TIERS, nextTier, tierById } from '../data/mock';
+import { useApp } from '../state/AppState';
 import { fmtDate, fmtVND } from '../utils/format';
 
 export function Membership() {
-  const tier = tierById(USER.tier);
-  const next = nextTier(USER.tier);
-  const pct = next ? Math.min(100, Math.round((USER.eligibleSpending / next.threshold) * 100)) : 100;
+  const { user } = useApp();
+  const tier = tierById(user.tier);
+  const next = nextTier(user.tier);
+  const pct = next ? Math.min(100, Math.round((user.eligibleSpending / next.threshold) * 100)) : 100;
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
@@ -30,13 +32,13 @@ export function Membership() {
             <div>
               <div className="mc-points-label">Chi tiêu xét hạng (12 tháng)</div>
               <div className="mc-points" style={{ fontSize: 22 }}>
-                {fmtVND(USER.eligibleSpending)}
+                {fmtVND(user.eligibleSpending)}
               </div>
             </div>
             <div className="mc-valid">
               Kỳ xét hạng đến
               <br />
-              <strong>{fmtDate(USER.tierReviewDate)}</strong>
+              <strong>{fmtDate(user.tierReviewDate)}</strong>
             </div>
           </div>
         </div>
@@ -46,7 +48,7 @@ export function Membership() {
       {next && (
         <div className="section">
           <div className="card" style={{ padding: '16px 17px' }}>
-            <div className="h2">Còn {fmtVND(next.threshold - USER.eligibleSpending)} để lên hạng {next.name}</div>
+            <div className="h2">Còn {fmtVND(next.threshold - user.eligibleSpending)} để lên hạng {next.name}</div>
             <div className="progress-track" style={{ marginTop: 12 }}>
               <div className="progress-fill" style={{ width: `${pct}%` }} />
             </div>
@@ -72,7 +74,7 @@ export function Membership() {
         </div>
         <div className="tier-scroll">
           {TIERS.map((t) => {
-            const isCurrent = t.id === USER.tier;
+            const isCurrent = t.id === user.tier;
             const gradient: Record<string, string> = {
               silver: 'linear-gradient(140deg, #3f4c5e, #66788f)',
               gold: 'linear-gradient(140deg, #6b4c12, #a97c22)',

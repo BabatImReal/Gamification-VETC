@@ -44,6 +44,56 @@ export interface CompleteMissionPayload {
   activity: ActivityRecord[];
 }
 
+export interface DemoProfileSummary {
+  id: string;
+  label: string;
+  segment: string;
+  engagementScore: number;
+  lastActiveDays: number;
+}
+
+export interface RecommendationPayload {
+  profile: {
+    id: string;
+    label: string;
+    name: string;
+    segment: string;
+    city: string;
+    vehicleType: string;
+    interests: string[];
+    engagementScore: number;
+    lastActiveDays: number;
+    loyaltyPoints: number;
+    preferredChannel: string;
+  };
+  profiles: DemoProfileSummary[];
+  recommendations: Mission[];
+  nextBestAction: string;
+  recommendationSummary: string;
+  personalizationMeta?: {
+    scoringFormula: string;
+    matchedActivityRules: string[];
+    mode?: string;
+  };
+}
+
+export interface RecommendationHistorySnapshot {
+  id: number;
+  profileId: string;
+  createdAt: string;
+  mode: string;
+  nextBestAction: string;
+  recommendationSummary: string;
+  profile: RecommendationPayload['profile'];
+  recommendations: Mission[];
+  personalizationMeta?: RecommendationPayload['personalizationMeta'];
+}
+
+export interface RecommendationHistoryPayload {
+  profileId: string;
+  snapshots: RecommendationHistorySnapshot[];
+}
+
 export interface PaymentInitPayload {
   id: string;
   order_id: string;
@@ -112,13 +162,27 @@ export const api = {
     return body.data;
   },
 
-  async completeMission(missionId: string) {
+  async completeMission(missionId: string, profileId?: string) {
     await this.ensureSession();
     const body = await request<ApiEnvelope<CompleteMissionPayload>>('/api/missions/complete', {
       method: 'POST',
       headers: { IdempotencyKey: idempotencyKey('mission') },
-      body: JSON.stringify({ missionId }),
+      body: JSON.stringify({ missionId, profileId }),
     });
+    return body.data;
+  },
+
+  async getRecommendations(profileId: string) {
+    await this.ensureSession();
+    const body = await request<ApiEnvelope<RecommendationPayload>>(`/api/gamification/recommendations?profileId=${encodeURIComponent(profileId)}`);
+    return body.data;
+  },
+
+  async getRecommendationHistory(profileId: string, limit = 10) {
+    await this.ensureSession();
+    const body = await request<ApiEnvelope<RecommendationHistoryPayload>>(
+      `/api/gamification/recommendations/history?profileId=${encodeURIComponent(profileId)}&limit=${encodeURIComponent(String(limit))}`,
+    );
     return body.data;
   },
 

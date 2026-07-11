@@ -1,17 +1,24 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { api } from '../api/client';
-import { ACTIVITY, MISSIONS, REWARDS, USER, VEHICLES } from '../data/mock';
-import type { ActivityRecord, Mission, Redemption, Reward, Vehicle } from '../data/mock';
+import type { RecommendationPayload, RecommendationHistorySnapshot, LoyaltySnapshot } from '../api/client';
+import { ACTIVITY, MISSIONS, REWARDS, SERVICES, USER, VEHICLES } from '../data/mock';
+import type { ActivityRecord, Mission, Redemption, Reward, Service, User, Vehicle } from '../data/mock';
 import MiniApp from '../sdk/miniapp';
 
 interface AppState {
+  user: User;
   pointsBalance: number;
   cashBalance: number;
+  vehicles: Vehicle[];
+  rewards: Reward[];
+  services: Service[];
   selectedVehicle: Vehicle;
   setSelectedVehicleId: (id: string) => void;
   activity: ActivityRecord[];
   missions: Mission[];
+  recommendation: RecommendationPayload | null;
+  recommendationHistory: RecommendationHistorySnapshot[];
   redemptions: Redemption[];
   redeem: (reward: Reward) => Promise<Redemption>;
   completeMission: (missionId: string) => Promise<void>;
@@ -27,15 +34,34 @@ const Ctx = createContext<AppState | null>(null);
 let seq = 0;
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState(USER);
   const [pointsBalance, setPointsBalance] = useState(USER.pointsBalance);
   const [cashBalance, setCashBalance] = useState(USER.cashBalance);
+  const [vehicles, setVehicles] = useState<Vehicle[]>(VEHICLES);
+  const [rewards, setRewards] = useState<Reward[]>(REWARDS);
+  const [services, setServices] = useState<Service[]>(SERVICES);
   const [vehicleId, setSelectedVehicleId] = useState(VEHICLES[0].id);
   const [activity, setActivity] = useState<ActivityRecord[]>(ACTIVITY);
   const [missions, setMissions] = useState<Mission[]>(MISSIONS);
+  const [recommendation, setRecommendation] = useState<RecommendationPayload | null>(null);
+  const [recommendationHistory, setRecommendationHistory] = useState<RecommendationHistorySnapshot[]>([]);
   const [redemptions, setRedemptions] = useState<Redemption[]>([]);
   const [loading, setLoading] = useState(true);
   const [backendReady, setBackendReady] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+
+  const applyLoyalty = useCallback((snapshot: LoyaltySnapshot) => {
+    setPointsBalance(snapshot.pointsBalance);
+    setCashBalance(snapshot.cashBalance);
+    setUser((current) => ({
+      ...current,
+      tier: snapshot.tier,
+      eligibleSpending: snapshot.eligibleSpending,
+      expiringPoints: snapshot.expiringPoints,
+      pointsBalance: snapshot.pointsBalance,
+      cashBalance: snapshot.cashBalance,
+    }));
+  }, []);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -50,10 +76,20 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         const auth = await MiniApp.getAuthCode();
         const data = await api.bootstrap(auth.data?.authCode);
         if (!alive) return;
-        setPointsBalance(data.loyalty.pointsBalance);
-        setCashBalance(data.loyalty.cashBalance);
+        setUser(data.user);
+        setVehicles(data.vehicles);
+        setRewards(data.rewards);
+        setServices(data.services);
+        setSelectedVehicleId(data.vehicles[0]?.id ?? VEHICLES[0].id);
+        applyLoyalty(data.loyalty);
         setActivity(data.activity);
         setMissions(data.missions.length ? data.missions : MISSIONS);
+        const personalized = await api.getRecommendations(data.user.id);
+        const history = await api.getRecommendationHistory(data.user.id, 6);
+        if (!alive) return;
+        setRecommendation(personalized);
+        setRecommendationHistory(history.snapshots);
+        setMissions(personalized.recommendations);
         setRedemptions(data.redemptions);
         setBackendReady(true);
         MiniApp.pushEvent('app_bootstrap_success', { userId: data.user.id });
@@ -74,13 +110,12 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     return () => {
       alive = false;
     };
-  }, [showToast]);
+  }, [applyLoyalty, showToast]);
 
   const redeem = useCallback(async (reward: Reward): Promise<Redemption> => {
     if (backendReady) {
       const result = await api.redeemReward(reward.id, vehicleId);
-      setPointsBalance(result.loyalty.pointsBalance);
-      setCashBalance(result.loyalty.cashBalance);
+      applyLoyalty(result.loyalty);
       setRedemptions((r) => [result.redemption, ...r.filter((x) => x.id !== result.redemption.id)]);
       setActivity(result.activity);
       MiniApp.pushEvent('reward_redeem', { rewardId: reward.id, points: reward.points, source: 'backend' });
@@ -118,17 +153,21 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     ]);
     MiniApp.pushEvent('reward_redeem', { rewardId: reward.id, points: reward.points, source: 'offline' });
     return redemption;
-  }, [backendReady, vehicleId]);
+  }, [applyLoyalty, backendReady, vehicleId]);
 
   const completeMission = useCallback(async (missionId: string) => {
     const mission = missions.find((m) => m.id === missionId) ?? MISSIONS.find((m) => m.id === missionId);
     if (!mission) return;
     if (backendReady) {
-      const result = await api.completeMission(missionId);
+      const result = await api.completeMission(missionId, user.id);
       setMissions(result.missions);
-      setPointsBalance(result.loyalty.pointsBalance);
-      setCashBalance(result.loyalty.cashBalance);
+      applyLoyalty(result.loyalty);
       setActivity(result.activity);
+      const personalized = await api.getRecommendations(user.id);
+      const history = await api.getRecommendationHistory(user.id, 6);
+      setRecommendation(personalized);
+      setRecommendationHistory(history.snapshots);
+      setMissions(personalized.recommendations);
       MiniApp.pushEvent('mission_complete', {
         missionId: result.mission.id,
         campaign: result.mission.campaign,
@@ -167,11 +206,12 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       source: 'offline',
     });
     showToast(`+${mission.loyaltyPoints.toLocaleString('vi-VN')} điểm • +${mission.xp} XP`);
-  }, [backendReady, missions, showToast]);
+  }, [applyLoyalty, backendReady, missions, showToast, user.id]);
 
   const activateService = useCallback(async (serviceId: string, serviceName: string) => {
     if (backendReady) {
       const result = await api.activateService(serviceId);
+      setServices((items) => items.map((item) => (item.id === result.service.id ? result.service : item)));
       setActivity(result.activity);
       showToast(`Đã kích hoạt: ${result.service.name}`);
       MiniApp.pushEvent('service_activate', { serviceId, source: 'backend' });
@@ -181,16 +221,22 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     MiniApp.pushEvent('service_activate', { serviceId, source: 'offline' });
   }, [backendReady, showToast]);
 
-  const selectedVehicle = VEHICLES.find((v) => v.id === vehicleId) ?? VEHICLES[0];
+  const selectedVehicle = vehicles.find((v) => v.id === vehicleId) ?? vehicles[0] ?? VEHICLES[0];
 
   const value = useMemo(
     () => ({
+      user,
       pointsBalance,
       cashBalance,
+      vehicles,
+      rewards,
+      services,
       selectedVehicle,
       setSelectedVehicleId,
       activity,
       missions,
+      recommendation,
+      recommendationHistory,
       redemptions,
       redeem,
       completeMission,
@@ -200,7 +246,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       toast,
       showToast,
     }),
-    [pointsBalance, cashBalance, selectedVehicle, activity, missions, redemptions, redeem, completeMission, activateService, loading, backendReady, toast, showToast],
+    [user, pointsBalance, cashBalance, vehicles, rewards, services, selectedVehicle, activity, missions, recommendation, recommendationHistory, redemptions, redeem, completeMission, activateService, loading, backendReady, toast, showToast],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
@@ -210,9 +256,4 @@ export function useApp(): AppState {
   const v = useContext(Ctx);
   if (!v) throw new Error('useApp must be used within AppStateProvider');
   return v;
-}
-
-/** Static reward lookup shared by screens. */
-export function rewardById(id: string | undefined): Reward | undefined {
-  return REWARDS.find((r) => r.id === id);
 }
