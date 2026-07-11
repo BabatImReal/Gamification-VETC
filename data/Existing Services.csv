@@ -1,0 +1,11 @@
+service_id,service_name,category,description,current_usage_signal,gamification_opportunity
+S001,ETC,Mobility,Thu phí không dừng,High usage,Daily/weekly driving streaks
+S002,VETC Wallet,Finance,Ví điện tử và thanh toán trong hệ sinh thái,Medium usage,"Top-up missions, payment streaks"
+S003,Civil Liability Insurance,Insurance,Bảo hiểm TNDS bắt buộc,Expiring users,"Renewal missions, deadline rewards"
+S004,Roadside Assistance,Safety,Cứu hộ giao thông,Low activation,Service discovery challenge
+S005,Parking,Mobility,Thanh toán hoặc đặt chỗ bãi đỗ,Medium usage,Parking exploration missions
+S006,EV Charging,EV,Dịch vụ sạc xe điện qua đối tác,EV users,EV charging challenge
+S007,Car Wash,Partner,Đặt lịch rửa xe đối tác,Low usage,Post-trip care mission
+S008,Vehicle Maintenance,Partner,Bảo dưỡng và kiểm tra xe,Medium potential,Vehicle health challenge
+S009,Travel Partner,Travel,"Ưu đãi du lịch, khách sạn, điểm dừng",Seasonal,Weekend travel challenge
+S010,Notification Center,Platform,Thông báo cá nhân hóa,Platform,Smart reminders
