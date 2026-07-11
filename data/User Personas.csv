@@ -1,0 +1,11 @@
+persona,description,engagement_goal,example_personalization_direction
+New User,"Mới đăng ký, ít dữ liệu hành vi",Onboarding và khám phá dịch vụ,"Nhiệm vụ nhỏ: hoàn thiện hồ sơ, liên kết xe, dùng ví lần đầu"
+Inactive User,Không mở app 20-30 ngày,Re-engagement,"Nhiệm vụ dễ, phần thưởng nhanh, thông báo đúng thời điểm"
+Daily Commuter,Dùng ETC hằng ngày,Tạo thói quen và cross-sell,"Streaks, ví, parking, nhắc bảo hiểm"
+Family Driver,Đi cuối tuần với gia đình,Tăng giá trị chuyến đi,"Mission du lịch, bảo hiểm, bãi đỗ, ưu đãi gia đình"
+Business Traveler,Đi công tác thường xuyên,Premium services,"Bãi đỗ, hóa đơn, bảo dưỡng, quyền lợi ưu tiên"
+EV Owner,Có xe điện và dùng trạm sạc,Tăng usage EV ecosystem,"Thử trạm mới, ưu đãi sạc, EV badge"
+High Loyalty User,Nhiều điểm và tương tác cao,Duy trì động lực,"Thử thách nâng cao, huy hiệu hiếm, referral"
+Low Engagement User,"Ít mở app, chưa hình thành thói quen",Tăng frequency,"Nhiệm vụ 1 phút, reward nhỏ, streak ngắn"
+Service Explorer,Thích thử dịch vụ mới,Khám phá hệ sinh thái,Quest dùng 3 dịch vụ khác nhau
+Safety Focused,"Quan tâm an toàn, xe cũ",Kích hoạt dịch vụ bảo vệ,Roadside/insurance missions

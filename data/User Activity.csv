@@ -1,0 +1,126 @@
+activity_id,user_id,event_date,activity_type,service,points_earned,value_vnd,description
+A001,U011,2026-06-13,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A002,U003,2026-06-04,Referral Share,Referral,35,0,Chia sẻ mã giới thiệu
+A003,U019,2026-06-17,Login,App,5,0,Mở ứng dụng
+A004,U002,2026-06-14,ETC Trip,ETC,20,0,Hoàn thành chuyến ETC
+A005,U003,2026-06-03,Parking Payment,Parking,25,30000,Thanh toán bãi đỗ
+A006,U002,2026-06-04,Car Wash Booking,Partner,20,80000,Đặt lịch rửa xe
+A007,U021,2026-06-02,Car Wash Booking,Partner,30,80000,Đặt lịch rửa xe
+A008,U002,2026-06-02,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ
+A009,U010,2026-06-05,EV Charging,EV Charging,25,120000,Thanh toán sạc xe
+A010,U019,2026-06-18,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A011,U004,2026-06-19,Car Wash Booking,Partner,20,80000,Đặt lịch rửa xe
+A012,U012,2026-06-18,ETC Trip,ETC,10,0,Hoàn thành chuyến ETC
+A013,U019,2026-06-20,Login,App,5,0,Mở ứng dụng
+A014,U016,2026-06-14,Referral Share,Referral,35,0,Chia sẻ mã giới thiệu
+A015,U015,2026-06-15,Car Wash Booking,Partner,25,80000,Đặt lịch rửa xe
+A016,U010,2026-06-26,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ
+A017,U023,2026-06-03,Parking Payment,Parking,20,30000,Thanh toán bãi đỗ
+A018,U017,2026-06-29,Reward Redemption,Loyalty,5,0,Đổi voucher
+A019,U024,2026-06-10,Reward Redemption,Loyalty,0,0,Đổi voucher
+A020,U004,2026-06-14,Referral Share,Referral,30,0,Chia sẻ mã giới thiệu
+A021,U025,2026-06-05,Roadside View,Roadside Assistance,15,0,Xem thông tin cứu hộ
+A022,U014,2026-06-22,Login,App,5,0,Mở ứng dụng
+A023,U025,2026-06-19,Referral Share,Referral,35,0,Chia sẻ mã giới thiệu
+A024,U011,2026-06-20,Roadside View,Roadside Assistance,15,0,Xem thông tin cứu hộ
+A025,U019,2026-06-03,Reward Redemption,Loyalty,0,0,Đổi voucher
+A026,U009,2026-06-23,Reward Redemption,Loyalty,0,0,Đổi voucher
+A027,U002,2026-06-21,Insurance View,Insurance,15,0,Xem thông tin bảo hiểm
+A028,U010,2026-06-29,EV Charging,EV Charging,30,120000,Thanh toán sạc xe
+A029,U001,2026-06-12,Reward Redemption,Loyalty,0,0,Đổi voucher
+A030,U020,2026-06-16,ETC Trip,ETC,10,0,Hoàn thành chuyến ETC
+A031,U007,2026-06-05,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A032,U013,2026-06-28,EV Charging,EV Charging,35,120000,Thanh toán sạc xe
+A033,U003,2026-06-15,Wallet Top-up,Wallet,30,500000,Nạp ví VETC
+A034,U018,2026-06-29,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A035,U014,2026-06-09,Referral Share,Referral,40,0,Chia sẻ mã giới thiệu
+A036,U012,2026-06-08,EV Charging,EV Charging,25,120000,Thanh toán sạc xe
+A037,U003,2026-06-05,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A038,U022,2026-06-01,Parking Payment,Parking,25,30000,Thanh toán bãi đỗ
+A039,U019,2026-06-09,Wallet Top-up,Wallet,25,500000,Nạp ví VETC
+A040,U001,2026-06-14,Wallet Top-up,Wallet,25,500000,Nạp ví VETC
+A041,U020,2026-06-11,Car Wash Booking,Partner,20,80000,Đặt lịch rửa xe
+A042,U023,2026-06-20,Referral Share,Referral,30,0,Chia sẻ mã giới thiệu
+A043,U015,2026-06-13,Referral Share,Referral,40,0,Chia sẻ mã giới thiệu
+A044,U013,2026-06-04,EV Charging,EV Charging,35,120000,Thanh toán sạc xe
+A045,U021,2026-06-02,EV Charging,EV Charging,25,120000,Thanh toán sạc xe
+A046,U003,2026-06-15,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ
+A047,U004,2026-06-20,Roadside View,Roadside Assistance,5,0,Xem thông tin cứu hộ
+A048,U004,2026-06-19,Login,App,5,0,Mở ứng dụng
+A049,U018,2026-06-12,ETC Trip,ETC,10,0,Hoàn thành chuyến ETC
+A050,U003,2026-06-20,Parking Payment,Parking,25,30000,Thanh toán bãi đỗ
+A051,U005,2026-06-12,Insurance View,Insurance,10,0,Xem thông tin bảo hiểm
+A052,U016,2026-06-04,ETC Trip,ETC,20,0,Hoàn thành chuyến ETC
+A053,U015,2026-06-16,Reward Redemption,Loyalty,5,0,Đổi voucher
+A054,U003,2026-06-04,Wallet Top-up,Wallet,25,500000,Nạp ví VETC
+A055,U024,2026-06-16,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A056,U017,2026-06-07,Login,App,10,0,Mở ứng dụng
+A057,U005,2026-06-01,Referral Share,Referral,35,0,Chia sẻ mã giới thiệu
+A058,U021,2026-06-23,ETC Trip,ETC,15,0,Hoàn thành chuyến ETC
+A059,U017,2026-06-06,Roadside View,Roadside Assistance,10,0,Xem thông tin cứu hộ
+A060,U025,2026-06-18,Parking Payment,Parking,20,30000,Thanh toán bãi đỗ
+A061,U021,2026-06-20,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ
+A062,U008,2026-06-24,EV Charging,EV Charging,25,120000,Thanh toán sạc xe
+A063,U007,2026-06-16,Referral Share,Referral,35,0,Chia sẻ mã giới thiệu
+A064,U024,2026-06-01,Login,App,10,0,Mở ứng dụng
+A065,U016,2026-06-07,Insurance View,Insurance,10,0,Xem thông tin bảo hiểm
+A066,U015,2026-06-12,Roadside View,Roadside Assistance,5,0,Xem thông tin cứu hộ
+A067,U008,2026-06-08,ETC Trip,ETC,20,0,Hoàn thành chuyến ETC
+A068,U007,2026-06-07,Roadside View,Roadside Assistance,15,0,Xem thông tin cứu hộ
+A069,U020,2026-06-27,Car Wash Booking,Partner,20,80000,Đặt lịch rửa xe
+A070,U016,2026-06-26,Roadside View,Roadside Assistance,5,0,Xem thông tin cứu hộ
+A071,U022,2026-06-13,ETC Trip,ETC,10,0,Hoàn thành chuyến ETC
+A072,U016,2026-06-14,Wallet Top-up,Wallet,25,500000,Nạp ví VETC
+A073,U003,2026-06-15,EV Charging,EV Charging,35,120000,Thanh toán sạc xe
+A074,U024,2026-06-24,ETC Trip,ETC,10,0,Hoàn thành chuyến ETC
+A075,U006,2026-06-01,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A076,U019,2026-06-26,Reward Redemption,Loyalty,0,0,Đổi voucher
+A077,U020,2026-06-16,Car Wash Booking,Partner,25,80000,Đặt lịch rửa xe
+A078,U005,2026-06-18,Referral Share,Referral,30,0,Chia sẻ mã giới thiệu
+A079,U001,2026-06-26,Login,App,5,0,Mở ứng dụng
+A080,U017,2026-06-14,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A081,U007,2026-06-09,Login,App,5,0,Mở ứng dụng
+A082,U010,2026-06-08,Referral Share,Referral,35,0,Chia sẻ mã giới thiệu
+A083,U009,2026-06-14,Referral Share,Referral,30,0,Chia sẻ mã giới thiệu
+A084,U002,2026-06-29,Roadside View,Roadside Assistance,15,0,Xem thông tin cứu hộ
+A085,U022,2026-06-27,Car Wash Booking,Partner,30,80000,Đặt lịch rửa xe
+A086,U017,2026-06-18,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A087,U017,2026-06-01,Referral Share,Referral,40,0,Chia sẻ mã giới thiệu
+A088,U025,2026-06-20,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A089,U025,2026-06-06,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A090,U016,2026-06-24,Car Wash Booking,Partner,20,80000,Đặt lịch rửa xe
+A091,U018,2026-06-11,Login,App,15,0,Mở ứng dụng
+A092,U025,2026-06-29,ETC Trip,ETC,10,0,Hoàn thành chuyến ETC
+A093,U008,2026-06-09,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ
+A094,U025,2026-06-17,ETC Trip,ETC,20,0,Hoàn thành chuyến ETC
+A095,U018,2026-06-25,Login,App,5,0,Mở ứng dụng
+A096,U015,2026-06-20,Roadside View,Roadside Assistance,5,0,Xem thông tin cứu hộ
+A097,U023,2026-06-15,Insurance View,Insurance,15,0,Xem thông tin bảo hiểm
+A098,U017,2026-06-23,Parking Payment,Parking,20,30000,Thanh toán bãi đỗ
+A099,U018,2026-06-27,Parking Payment,Parking,25,30000,Thanh toán bãi đỗ
+A100,U005,2026-06-04,EV Charging,EV Charging,35,120000,Thanh toán sạc xe
+A101,U015,2026-06-03,Roadside View,Roadside Assistance,5,0,Xem thông tin cứu hộ
+A102,U014,2026-06-07,ETC Trip,ETC,15,0,Hoàn thành chuyến ETC
+A103,U004,2026-06-23,Wallet Top-up,Wallet,25,500000,Nạp ví VETC
+A104,U005,2026-06-29,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A105,U015,2026-06-24,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ
+A106,U013,2026-06-06,Reward Redemption,Loyalty,0,0,Đổi voucher
+A107,U006,2026-06-17,EV Charging,EV Charging,35,120000,Thanh toán sạc xe
+A108,U011,2026-06-07,EV Charging,EV Charging,30,120000,Thanh toán sạc xe
+A109,U011,2026-06-24,ETC Trip,ETC,15,0,Hoàn thành chuyến ETC
+A110,U001,2026-06-18,Roadside View,Roadside Assistance,15,0,Xem thông tin cứu hộ
+A111,U015,2026-06-13,Login,App,10,0,Mở ứng dụng
+A112,U017,2026-06-10,Car Wash Booking,Partner,20,80000,Đặt lịch rửa xe
+A113,U004,2026-06-29,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ
+A114,U003,2026-06-09,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A115,U025,2026-06-09,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A116,U014,2026-06-13,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A117,U018,2026-06-19,Referral Share,Referral,40,0,Chia sẻ mã giới thiệu
+A118,U023,2026-06-03,Roadside View,Roadside Assistance,10,0,Xem thông tin cứu hộ
+A119,U002,2026-06-14,Wallet Top-up,Wallet,20,500000,Nạp ví VETC
+A120,U009,2026-06-21,Login,App,5,0,Mở ứng dụng
+A121,U009,2026-06-20,ETC Trip,ETC,10,0,Hoàn thành chuyến ETC
+A122,U003,2026-06-28,Insurance View,Insurance,5,0,Xem thông tin bảo hiểm
+A123,U015,2026-06-11,Login,App,15,0,Mở ứng dụng
+A124,U009,2026-06-05,Car Wash Booking,Partner,20,80000,Đặt lịch rửa xe
+A125,U017,2026-06-04,Parking Payment,Parking,15,30000,Thanh toán bãi đỗ

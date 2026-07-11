@@ -1,0 +1,13 @@
+reward_id,reward_name,reward_type,required_points,partner_category,description
+R001,Voucher cà phê 30.000đ,Voucher,300,Food & Beverage,Đổi voucher đồ uống
+R002,Giảm 20.000đ phí bãi đỗ,Parking,500,Parking,Voucher cho dịch vụ bãi đỗ
+R003,Hoàn 5% khi nạp ví,Wallet,700,Finance,Ưu đãi nạp ví
+R004,Giảm 10% rửa xe,Partner Voucher,800,Car Wash,Ưu đãi đối tác rửa xe
+R005,Giảm 50.000đ bảo hiểm,Insurance,1200,Insurance,Ưu đãi gia hạn bảo hiểm
+R006,Giảm 15% cứu hộ năm đầu,Roadside,1500,Safety,Ưu đãi kích hoạt cứu hộ
+R007,Voucher sạc xe 50.000đ,EV,1000,EV Charging,Ưu đãi cho người dùng EV
+R008,Voucher ăn uống 100.000đ,Lifestyle,1800,Restaurant,Ưu đãi đối tác ăn uống
+R009,Combo du lịch cuối tuần,Travel,2500,Travel,Ưu đãi du lịch đối tác
+R010,Hạng thành viên ưu tiên,Membership,4000,Platform,Quyền lợi ưu tiên hỗ trợ
+R011,Voucher bảo dưỡng xe,Maintenance,2200,Maintenance,Giảm giá kiểm tra/bảo dưỡng
+R012,Điểm thưởng nhân đôi cuối tuần,Loyalty Bonus,0,Campaign,Ưu đãi theo chiến dịch

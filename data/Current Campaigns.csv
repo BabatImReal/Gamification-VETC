@@ -1,0 +1,7 @@
+campaign_id,campaign_name,start_date,end_date,target_segment,description,gamification_fit
+C001,Summer Travel Challenge,2026-06-01,2026-07-31,"Weekend Traveler, Family Driver",Ưu đãi mùa du lịch hè,"Seasonal missions, travel checklist"
+C002,Road Safety Month,2026-07-01,2026-07-31,"Safety Focused, Roadside Candidate",Khuyến khích bảo hiểm và cứu hộ,"Safety badges, responsible mobility"
+C003,Wallet Cashback Weekend,2026-06-01,2026-08-31,"Wallet User, Daily Commuter",Hoàn tiền khi thanh toán bằng ví cuối tuần,Payment streaks
+C004,EV Week,2026-07-10,2026-07-17,"EV Owner, EV New User",Ưu đãi sạc xe điện,EV charging missions
+C005,Referral Sprint,2026-06-15,2026-07-15,"Referral Candidate, High Loyalty User",Thưởng giới thiệu bạn bè,Referral leaderboard
+C006,Service Discovery Month,2026-08-01,2026-08-31,"New User, Light User",Khuyến khích dùng dịch vụ mới,Explore 3 services challenge
